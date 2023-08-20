@@ -118,7 +118,7 @@ template <typename OStreamType, bool Mutex>
 template <typename... Args>
 void Logger<OStreamType, Mutex>::_Log(LogLevel level, Args &&... args)
 {
-	typename std::conditional_t<Mutex, std::lock_guard<std::mutex>, void *> lock{_mtx};
+	std::conditional_t<Mutex, std::lock_guard<std::mutex>, Empty> lock{_mtx};
 	// [Time] [Name] [Level]: {User message}
 	const auto now = std::chrono::system_clock::now();
 	const auto time = std::chrono::time_point_cast<std::chrono::milliseconds>(now);
@@ -139,7 +139,7 @@ template <typename OStreamType, bool Mutex>
 template <typename InputIt>
 void Logger<OStreamType, Mutex>::_LogIter(LogLevel level, InputIt begin, InputIt end)
 {
-	typename std::conditional_t<Mutex, std::lock_guard<std::mutex>, void *> lock{_mtx};
+	std::conditional_t<Mutex, std::lock_guard<std::mutex>, Empty> lock{_mtx};
 	// [Time] [Name] [Level]: { vec }
 	const auto now = std::chrono::system_clock::now();
 	const auto time = std::chrono::time_point_cast<std::chrono::milliseconds>(now);

@@ -14,6 +14,12 @@
 #include "th_logger/log_level.h"
 #include "th_logger/log_utils.h"
 
+namespace
+{
+class Empty {};
+} // namespace
+
+
 namespace Th::Log
 {
 
@@ -126,7 +132,7 @@ protected:
 	bool _forceFlush = false;
 
 	/// @brief Mutex for locking
-	std::conditional<Mutex, std::mutex, void *>::type _mtx;
+	[[no_unique_address]] std::conditional_t<Mutex, std::mutex, Empty> _mtx;
 
 	/// @brief Logging implementation
 	/// @tparam ...Args message types
